@@ -26,8 +26,9 @@ for i in range(number_of_pages):
     encoding = 'utf-8'
     html_code_str = html_code_bytes.decode(encoding)
     # print(html_code_str)
-
-    for g in range(1, 53):
+    g = 0
+    while html_code_str.find('"desktop":"https://hh.ru/vacancy/') != -1:
+        g += 1
         print('вакансия', g)
         # print(html_code_str)
         # href="https://hh.ru/v "desktop":"https://hh.ru/vacancy/
@@ -39,7 +40,6 @@ for i in range(number_of_pages):
         vac_url = html_code_str[index1:index2]
         vac_url_list.append(vac_url)
         print('урл вакансии', vac_url)
-#
         html_code_str = html_code_str[index2:]
     print(vac_url_list)
 # сначала собрать список с вакансиями и потом его перебрать и из него подоставать все что надо
@@ -53,9 +53,9 @@ for vacancy_url in vac_url_list:
 
     if vacancy_str.find('"keySkill":[') != -1:
         index1 = vacancy_str.find('"keySkill":[') + 12
-        print('index1', index1)
+        #print('index1', index1)
         index2 = vacancy_str.find(']},"driverLicenseTypes"')#не понятно как определить
-        print('index2', index2)
+        #print('index2', index2)
 
         str_skills = vacancy_str[index1:index2]
         list_vac_skill = str_skills.split(',')
@@ -63,7 +63,7 @@ for vacancy_url in vac_url_list:
     else:
         list_skills.append('Скиллы не указаны')
 
-    print(list_skills)
+    #print(list_skills)
     print(f"Осмотрено {vac_url_list.index(vacancy_url)+1} вакансий из {len(vac_url_list)}")
 
 u_list_skills = list(set(list_skills))
@@ -78,23 +78,3 @@ print(skills_dict)
 
 z = pd.DataFrame(skills_dict, index=[0])
 z.to_excel("file_name.xlsx")
-
-#         vac_html_code_bytes = urllib.request.urlopen(vac_url).read()
-#         encoding = 'utf-8'
-#         vac_html_code_str = vac_html_code_bytes.decode(encoding)
-# #       здесь мы получаем код страницы конкретной вакансии и дальше нам надо найти навыки.
-#         while vac_html_code_str.find('data - qa = "bloko-tag__text"') != -1 :
-#             vac_index1 = vac_html_code_str.find('data - qa = "bloko-tag__text"') + 29
-#             vac_index2 = vac_html_code_str.find('<', vac_index1)
-#             skill = html_code_str[vac_index1:vac_index2]
-#
-#             if skill in list(skills_dict.keys()):
-#                 skills_dict[skill] += 1
-#             else:
-#                 skills_dict[skill] = 1
-#
-#             vac_html_code_str = vac_html_code_str[vac_index2:]
-# #
-#         html_code_str = html_code_str[index2:]
-
-# некст надо сделать вывод в хl
